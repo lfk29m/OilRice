@@ -6,11 +6,17 @@ import type { MenuItemType } from '@/types'
 const props = defineProps<Pick<MenuItemType, 'id'>>()
 
 const appStore = useAppStore()
+
 const menuItem = computed(() => appStore.menus.find((item) => item.id === props.id))
+
+const removeMenuItem = () => {
+  appStore.menus = appStore.menus.filter((item) => item.id !== props.id)
+}
 </script>
 
 <template>
   <section v-if="menuItem" class="menuTable">
+    <div class="menuTable__removeBtn" @click="removeMenuItem">X</div>
     <table>
       <thead>
         <tr>
@@ -32,8 +38,18 @@ const menuItem = computed(() => appStore.menus.find((item) => item.id === props.
 
 <style lang="scss" scoped>
 .menuTable {
+  position: relative;
   border: 1px solid #ccc;
   padding: 1rem;
+
+  &__removeBtn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0.5rem;
+    cursor: pointer;
+    color: #ff0000;
+  }
 
   table {
     width: 100%;

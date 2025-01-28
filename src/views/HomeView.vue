@@ -6,13 +6,15 @@ import { onMounted } from 'vue'
 const appStore = useAppStore()
 
 onMounted(() => {
-  appStore.initMenus()
+  appStore.createMenu()
 })
 </script>
 
 <template>
   <main>
     <MenuTable v-for="menu in appStore.menus" :key="menu.id" :id="menu.id" class="menus" />
+
+    <button @click="appStore.createMenu">新增</button>
   </main>
 </template>
 
