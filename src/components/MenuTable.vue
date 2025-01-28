@@ -48,7 +48,14 @@ const removeMenuItem = () => {
           <td class="name">{{ item.name }}</td>
           <td class="price">{{ item.price }}</td>
           <td class="count">
-            <input v-model="item.count" type="number" min="0" max="1000" step="1" />
+            <input
+              v-model="item.count"
+              type="text"
+              inputmode="numeric"
+              min="0"
+              max="1000"
+              step="1"
+            />
           </td>
         </tr>
       </tbody>
