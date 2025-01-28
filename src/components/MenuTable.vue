@@ -32,7 +32,7 @@ const removeMenuItem = () => {
 <template>
   <section v-if="menuItem" :id="menuItem.id" class="menuTable">
     <div class="menuTable__controller">
-      <button @click="reset">reset</button>
+      <button @click="reset">清空</button>
       <div class="menuTable__removeBtn" @click="removeMenuItem">X</div>
     </div>
     <table>
