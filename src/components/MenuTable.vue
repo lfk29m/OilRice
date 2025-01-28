@@ -87,11 +87,11 @@ const removeMenuItem = () => {
   }
 
   .name {
-    width: 80px;
+    width: 50px;
   }
 
   .price {
-    width: 50px;
+    width: 30px;
   }
 
   .count {
