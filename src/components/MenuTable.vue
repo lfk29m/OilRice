@@ -50,7 +50,7 @@ const removeMenuItem = () => {
           <td class="count">
             <input
               v-model="item.count"
-              type="text"
+              type="number"
               inputmode="numeric"
               min="0"
               max="1000"
