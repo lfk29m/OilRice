@@ -47,7 +47,9 @@ const removeMenuItem = () => {
         <tr v-for="item in menuItem.items" :key="item.name">
           <td class="name">{{ item.name }}</td>
           <td class="price">{{ item.price }}</td>
-          <td class="count"><input v-model="item.count" type="number" /></td>
+          <td class="count">
+            <input v-model="item.count" type="number" min="0" max="1000" step="1" />
+          </td>
         </tr>
       </tbody>
     </table>
