@@ -1,11 +1,15 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { ref, computed } from 'vue'
 import { useAppStore } from '@/stores/app'
 import type { MenuItemType } from '@/types'
+import dayjs from 'dayjs'
+import { PRIMARY_TIME_FORMAT } from '@/utils/constant'
 
 const props = defineProps<Pick<MenuItemType, 'id'>>()
 
 const appStore = useAppStore()
+
+const createAt = ref(dayjs().format(PRIMARY_TIME_FORMAT))
 
 const menuItem = computed(() => appStore.menus.find((item) => item.id === props.id))
 
@@ -19,6 +23,7 @@ const totalPrice = computed(() => {
 
 const reset = () => {
   if (!menuItem.value) return
+  createAt.value = dayjs().format(PRIMARY_TIME_FORMAT)
   menuItem.value.items.forEach((item) => {
     item.count = null
   })
@@ -35,6 +40,7 @@ const removeMenuItem = () => {
       <button @click="reset">清空</button>
       <div class="menuTable__removeBtn" @click="removeMenuItem">X</div>
     </div>
+    <div class="createAt">{{ createAt }}</div>
     <table>
       <thead>
         <tr>
@@ -61,7 +67,9 @@ const removeMenuItem = () => {
       </tbody>
     </table>
     <hr />
-    <div class="totalPrice">總價: {{ totalPrice }}</div>
+    <div class="menuTable__footer">
+      <div class="totalPrice">總價: {{ totalPrice }}</div>
+    </div>
   </section>
 </template>
 
@@ -81,6 +89,11 @@ const removeMenuItem = () => {
     padding: 0.5rem;
     cursor: pointer;
     color: #ff0000;
+  }
+
+  .createAt {
+    color: #898989;
+    margin-bottom: 1rem;
   }
 
   table {
@@ -116,9 +129,15 @@ const removeMenuItem = () => {
     border-color: #e9e9e93d;
   }
 
+  &__footer {
+    display: flex;
+    align-items: center;
+  }
+
   .totalPrice {
     font-size: 1.5rem;
-    text-align: right;
+    font-weight: 900;
+    margin-left: auto;
   }
 }
 </style>

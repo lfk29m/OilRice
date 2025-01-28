@@ -12,3 +12,5 @@ export const MENU_ITEM = [
   { name: '大腸麵線(小)', price: 45 },
   { name: '大腸麵線(大)', price: 65 },
 ]
+
+export const PRIMARY_TIME_FORMAT = 'YYYY-MM-DD HH:mm:ss'
