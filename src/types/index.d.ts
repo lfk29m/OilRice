@@ -9,11 +9,11 @@ export type MenuItemType = {
   /**
    * 桌號
    */
-  tableNumber?: null | number
+  tableNumber: string | number
   date: Date
   items: {
     name: string
     price: number
-    count?: null | number
+    count: string | number
   }[]
 }

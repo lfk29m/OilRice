@@ -9,8 +9,14 @@ export const useAppStore = defineStore('app', () => {
 
   const createMenu = () => {
     const id = `menuTable-${useUUID()}`
-    const items = MENU_ITEM.map((item) => ({ ...item, count: null }))
-    const newMenuItem: MenuItemType = { id, date: new Date(), items }
+    const items = MENU_ITEM.map((item) => ({ ...item, count: '' }))
+    const newMenuItem: MenuItemType = {
+      id,
+      date: new Date(),
+      isTakeAway: false,
+      tableNumber: '',
+      items,
+    }
     menus.value.push(newMenuItem)
     return newMenuItem
   }

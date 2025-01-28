@@ -4,6 +4,7 @@ import { useAppStore } from '@/stores/app'
 import type { MenuItemType } from '@/types'
 import dayjs from 'dayjs'
 import { PRIMARY_TIME_FORMAT } from '@/utils/constant'
+import { useScrollTo } from '@/utils/useScrollTo'
 
 const props = defineProps<Pick<MenuItemType, 'id'>>()
 
@@ -18,20 +19,36 @@ const menuItem = computed(() => appStore.menus.find((item) => item.id === props.
  */
 const totalPrice = computed(() => {
   if (!menuItem.value) return 0
-  return menuItem.value.items.reduce((acc, item) => acc + item.price * (item.count ?? 0), 0)
+  return menuItem.value.items.reduce((acc, item) => acc + item.price * Number(item.count), 0)
+})
+
+/**
+ * 交付金額
+ */
+const payPrice = ref<string | number>('')
+
+/**
+ * 找錢金額
+ */
+const returnPrice = computed(() => {
+  if (payPrice.value === '') return 0
+  return Number(payPrice.value) - totalPrice.value
 })
 
 const reset = () => {
   if (!menuItem.value) return
   createAt.value = dayjs().format(PRIMARY_TIME_FORMAT)
+  payPrice.value = ''
   menuItem.value.isTakeAway = false
-  menuItem.value.tableNumber = null
+  menuItem.value.tableNumber = ''
   menuItem.value.items.forEach((item) => {
-    item.count = null
+    item.count = ''
   })
 }
 
 const removeMenuItem = () => {
+  const targetIndex = appStore.menus.findIndex((item) => item.id === props.id)
+  if (targetIndex > 0) useScrollTo(appStore.menus[targetIndex - 1].id)
   appStore.menus = appStore.menus.filter((item) => item.id !== props.id)
 }
 </script>
@@ -81,7 +98,11 @@ const removeMenuItem = () => {
     </table>
     <hr />
     <div class="menuTable__footer">
-      <div class="totalPrice">總價: {{ totalPrice }}</div>
+      <p class="payPrice">
+        交付: <input v-model="payPrice" type="number" inputmode="numeric" class="payPrice__input" />
+      </p>
+      <p>總價: {{ totalPrice }}</p>
+      <p>找錢: {{ returnPrice }}</p>
     </div>
   </section>
 </template>
@@ -154,14 +175,13 @@ const removeMenuItem = () => {
   }
 
   &__footer {
-    display: flex;
-    align-items: center;
-  }
-
-  .totalPrice {
+    text-align: right;
     font-size: 1.5rem;
     font-weight: 900;
-    margin-left: auto;
+  }
+
+  .payPrice__input {
+    width: 100px;
   }
 }
 </style>
