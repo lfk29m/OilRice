@@ -1,9 +1,16 @@
 <script setup lang="ts">
 import MenuTable from '../components/MenuTable.vue'
 import { useAppStore } from '../stores/app'
-import { onMounted } from 'vue'
+import { nextTick, onMounted } from 'vue'
+import { useScrollTo } from '@/utils/useScrollTo'
 
 const appStore = useAppStore()
+
+const createMenu = async () => {
+  const { id } = appStore.createMenu()
+  await nextTick()
+  useScrollTo(id)
+}
 
 onMounted(() => {
   appStore.createMenu()
@@ -14,7 +21,7 @@ onMounted(() => {
   <main>
     <MenuTable v-for="menu in appStore.menus" :key="menu.id" :id="menu.id" class="menus" />
 
-    <button @click="appStore.createMenu">新增</button>
+    <button @click="createMenu">新增</button>
   </main>
 </template>
 
