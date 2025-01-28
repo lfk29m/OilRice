@@ -24,6 +24,8 @@ const totalPrice = computed(() => {
 const reset = () => {
   if (!menuItem.value) return
   createAt.value = dayjs().format(PRIMARY_TIME_FORMAT)
+  menuItem.value.isTakeAway = false
+  menuItem.value.tableNumber = null
   menuItem.value.items.forEach((item) => {
     item.count = null
   })
@@ -40,7 +42,18 @@ const removeMenuItem = () => {
       <button @click="reset">清空</button>
       <div class="menuTable__removeBtn" @click="removeMenuItem">X</div>
     </div>
+    <div class="menuTable__type">
+      <div>
+        <label for="isTakeAway">外帶</label>
+        <input v-model="menuItem.isTakeAway" type="checkbox" id="isTakeAway" />
+      </div>
+      <div>
+        <label for="isIn">內用</label>
+        <input v-model="menuItem.tableNumber" type="number" inputmode="numeric" id="isIn" />
+      </div>
+    </div>
     <div class="createAt">{{ createAt }}</div>
+    <hr />
     <table>
       <thead>
         <tr>
@@ -83,6 +96,17 @@ const removeMenuItem = () => {
     display: flex;
     justify-content: space-between;
     margin-bottom: 1rem;
+  }
+
+  &__type {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+
+    label {
+      margin-right: 0.5rem;
+    }
   }
 
   &__removeBtn {
